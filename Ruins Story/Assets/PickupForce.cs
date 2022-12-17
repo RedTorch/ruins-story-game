@@ -6,7 +6,9 @@ public class PickupForce : MonoBehaviour
 {
     public Rigidbody PullTarget;
     public Vector3 PullDestination;
+
     private Transform cam;
+    private bool isLocked = false;
     // [SerializeField] private AnimationCurve PullForce;
 
     private RaycastHit hit;
@@ -25,7 +27,15 @@ public class PickupForce : MonoBehaviour
         }
         else if(Input.GetButton("Fire1") && PullTarget != null) {
             PullDestination = cam.position + (cam.forward * 2f);
-            PullTarget.velocity = Vector3.Normalize(PullDestination - PullTarget.transform.position) * Vector3.Distance(PullDestination, PullTarget.transform.position) * 10f;
+            if(isLocked) {
+                PullTarget.transform.position = PullDestination;
+            }
+            else {
+                if(Vector3.Distance(PullDestination, PullTarget.transform.position)<0.1f) {
+                    isLocked = true;
+                }
+                PullTarget.velocity = Vector3.Normalize(PullDestination - PullTarget.transform.position) * Vector3.Distance(PullDestination, PullTarget.transform.position) * 10f;
+            }
         }
         else {
             LetGo();
@@ -46,6 +56,7 @@ public class PickupForce : MonoBehaviour
         if(PullTarget != null) {
             PullTarget.useGravity = true;
             PullTarget = null;
+            isLocked = false;
         }
     }
 }
