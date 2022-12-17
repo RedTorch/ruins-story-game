@@ -334,9 +334,23 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 415352303}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0497f5d02563d48fd805acc6bdd8347c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PullTarget: {fileID: 0}
+  PullDestination: {x: 0, y: 0, z: 0}
+--- !u!114 &415352316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415352303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 535b1a1a5aee74ceca38f73644e5bc7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PullTarget: {fileID: 0}
@@ -697,7 +711,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1662893483}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &740743107
 PrefabInstance:
@@ -1271,7 +1285,7 @@ Transform:
   m_Children:
   - {fileID: 639851497}
   m_Father: {fileID: 1662893483}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1662893482
 GameObject:
@@ -1303,6 +1317,7 @@ Transform:
   m_Children:
   - {fileID: 1157935651}
   - {fileID: 1071652839}
+  - {fileID: 2060932483}
   - {fileID: 1528382090}
   - {fileID: 705507995}
   m_Father: {fileID: 0}
@@ -1387,7 +1402,7 @@ GameObject:
   - component: {fileID: 2060932480}
   - component: {fileID: 2060932479}
   m_Layer: 0
-  m_Name: Dekai boi - steel
+  m_Name: Cubic meter of steel (test object)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1479,11 +1494,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2060932478}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 3.09, y: 2.07, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 1662893483}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
