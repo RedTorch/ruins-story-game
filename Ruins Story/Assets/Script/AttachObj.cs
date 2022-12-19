@@ -37,6 +37,9 @@ public class AttachObj : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
+        if(AttachedObject != null) {
+            return;
+        }
         string ps = "Trigger entered - ";
         ObjectData otherScr = other.GetComponent<ObjectData>();
         if(otherScr == null) {

@@ -24,7 +24,8 @@ public class PullForce : MonoBehaviour
             Grab(hit.rigidbody);
         }
         else if(Input.GetButton("Fire1") && PullTarget != null) {
-            PullDestination = cam.position; // Player is the pull destination by default
+            // PullDestination = cam.position; // Player is the pull destination by default
+            PullDestination = transform.position;
             PullTarget.AddForce(Vector3.Normalize(PullDestination - PullTarget.transform.position) * Vector3.Distance(PullDestination, PullTarget.transform.position) * Time.deltaTime * 80f);
         }
         else {
