@@ -2,14 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttachObj : MonoBehaviour
+public class Socket : MonoBehaviour
 {
-    public GameObject AttachedObject;
+    [Tooltip("A list of tags for dockable objects.\nWill be rejected if does not contain any of these.")]
+    public string[] AcceptedTags;
+    [Tooltip("A list of tags which will prevent an object from docking.")]
+    public string[] RejectedTags;
+
+    [SerializeField] private GameObject AttachedObject;
+    [SerializeField] private ObjectData AttachedData;
+    private ObjectData ThisData;
 
     // Start is called before the first frame update
     void Start()
     {
-        //
+        if(gameObject.GetComponent<ObjectData>() != null) {
+            ThisData = gameObject.GetComponent<ObjectData>();
+        }
     }
 
     // Update is called once per frame
@@ -18,9 +27,10 @@ public class AttachObj : MonoBehaviour
         //
     }
 
-    void DetachCurrObject() {
+    public void DetachCurrObject() {
         Rigidbody arb = AttachedObject.GetComponent<Rigidbody>();
-        arb.isKinematic = true;
+        AttachedData = null;
+        arb.isKinematic = false;
         AttachedObject.transform.SetParent(null);
         AttachedObject = null;
     }
@@ -33,10 +43,11 @@ public class AttachObj : MonoBehaviour
         AttachedObject.transform.SetParent(transform);
         AttachedObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
         Rigidbody arb = AttachedObject.GetComponent<Rigidbody>();
-        arb.isKinematic = false;
+        arb.isKinematic = true;
+        AttachedData = AttachedObject.GetComponent<ObjectData>();
     }
 
-    void OnTriggerEnter(Collider other) {
+    void OnTriggerStay(Collider other) {
         if(AttachedObject != null) {
             return;
         }
@@ -46,11 +57,22 @@ public class AttachObj : MonoBehaviour
             print(ps + "other does not have ObjectData");
             return;
         }
-        if(otherScr.Contains("key") == false) {
-            print(ps + "other is not tagged as key");
+        bool containsAcceptedTags = false;
+        foreach(string tag in AcceptedTags) {
+            if(otherScr.Contains("key") == false) {
+                containsAcceptedTags = true;
+                break;
+            }
+        }
+        if(otherScr.Contains("isHeld")) {
+            print(ps + "other is being held by Player");
             return;
         }
         SetAttachedObject(other.gameObject);
         print(ps + "setting other as attached gameobj");
+    }
+
+    public ObjectData GetData() {
+        return AttachedData;
     }
 }

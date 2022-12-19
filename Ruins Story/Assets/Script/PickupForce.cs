@@ -43,20 +43,26 @@ public class PickupForce : MonoBehaviour
     }
 
     void Grab(Rigidbody grabbedObj) {
-        if(grabbedObj == null) {
+        if(grabbedObj == null || grabbedObj.GetComponent<ObjectData>() == null) {
             // what to do if object has no rigidbody (e.g. play "shwump" failed pickup sound)
             return;
         }
+        if(grabbedObj.transform.parent != null && grabbedObj.transform.parent.GetComponent<Socket>() != null) {
+            grabbedObj.transform.parent.GetComponent<Socket>().DetachCurrObject();
+        }
         PullTarget = grabbedObj;
         PullTarget.useGravity = false;
+        grabbedObj.GetComponent<ObjectData>().Add("isHeld");
         // play "successful" sound
     }
 
     void LetGo() {
-        if(PullTarget != null) {
-            PullTarget.useGravity = true;
-            PullTarget = null;
-            isLocked = false;
+        if(PullTarget == null || PullTarget.GetComponent<ObjectData>() == null) {
+            return;
         }
+        PullTarget.GetComponent<ObjectData>().Remove("isHeld");
+        PullTarget.useGravity = true;
+        PullTarget = null;
+        isLocked = false;
     }
 }
