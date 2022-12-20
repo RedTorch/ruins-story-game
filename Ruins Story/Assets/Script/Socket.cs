@@ -29,7 +29,15 @@ public class Socket : MonoBehaviour
     }
 
     public void DetachCurrObject() {
+        if(AttachedObject == null) {
+            return;
+        }
+        foreach(Socket s in AttachedData.GetSockets()) {
+            s.DetachCurrObject();
+        }
+        SetAttachedSockets(false);
         Rigidbody arb = AttachedObject.GetComponent<Rigidbody>();
+        AttachedData.Remove("isAttached");
         AttachedData = null;
         arb.isKinematic = false;
         AttachedObject.transform.SetParent(null);
@@ -46,6 +54,8 @@ public class Socket : MonoBehaviour
         Rigidbody arb = AttachedObject.GetComponent<Rigidbody>();
         arb.isKinematic = true;
         AttachedData = AttachedObject.GetComponent<ObjectData>();
+        AttachedData.Add("isAttached");
+        SetAttachedSockets(true);
     }
 
     void OnTriggerStay(Collider other) {
@@ -79,7 +89,16 @@ public class Socket : MonoBehaviour
         if(otherScr.Contains("isHeld")) {
             return;
         }
+        if(otherScr.Contains("isAttached")) {
+            return;
+        }
         SetAttachedObject(other.gameObject);
+    }
+
+    private void SetAttachedSockets(bool value) {
+        foreach(Socket s in AttachedData.GetSockets()) {
+            s.gameObject.SetActive(value);
+        }
     }
 
     public ObjectData GetData() {

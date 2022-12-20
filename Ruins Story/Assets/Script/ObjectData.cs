@@ -9,10 +9,16 @@ public class ObjectData : MonoBehaviour
     // vvv this is of format "data header, value"
     [SerializeField] private Dictionary<string, float> Dats = new Dictionary<string, float>();
 
+    [SerializeField] private List<Socket> MySockets;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        foreach (Transform child in transform) {
+            if (child.gameObject.GetComponent<Socket>() != null) {
+                MySockets.Add(child.gameObject.GetComponent<Socket>());
+            }
+        }
     }
 
     // Update is called once per frame
@@ -60,5 +66,13 @@ public class ObjectData : MonoBehaviour
 
     public string GetDescriptionText() {
         return "Description: " + DescText;
+    }
+
+    public Socket[] GetSockets() {
+        Socket[] ret = new Socket[MySockets.Count];
+        for(int i=0;i<MySockets.Count;i++) {
+            ret[i] = MySockets[i];
+        }
+        return ret;
     }
 }

@@ -6,6 +6,7 @@ public class PickupForce : MonoBehaviour
 {
     public Rigidbody PullTarget;
     public Vector3 PullDestination;
+    public float GrabPosOffset = 3f;
 
     private bool isLocked = false;
     // [SerializeField] private AnimationCurve PullForce;
@@ -26,7 +27,7 @@ public class PickupForce : MonoBehaviour
             Grab(hit.rigidbody);
         }
         else if(Input.GetButton("Fire1") && PullTarget != null) {
-            PullDestination = cam.position + (cam.forward * 2f);
+            PullDestination = cam.position + (cam.forward * GrabPosOffset);
             if(isLocked) {
                 PullTarget.transform.position = PullDestination;
             }
