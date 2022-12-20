@@ -48,28 +48,32 @@ public class Socket : MonoBehaviour
     }
 
     void OnTriggerStay(Collider other) {
+        ObjectData otherScr = other.GetComponent<ObjectData>();
         if(AttachedObject != null) {
             return;
         }
-        string ps = "Trigger entered - ";
-        ObjectData otherScr = other.GetComponent<ObjectData>();
         if(otherScr == null) {
-            print(ps + "other does not have ObjectData");
             return;
         }
         bool containsAcceptedTags = false;
         foreach(string tag in AcceptedTags) {
-            if(otherScr.Contains("key") == false) {
+            if(otherScr.Contains(tag) == true) {
                 containsAcceptedTags = true;
                 break;
             }
         }
+        if(containsAcceptedTags == false) {
+            return;
+        }
+        foreach(string tag in RejectedTags) {
+            if(otherScr.Contains(tag) == false) {
+                return;
+            }
+        }
         if(otherScr.Contains("isHeld")) {
-            print(ps + "other is being held by Player");
             return;
         }
         SetAttachedObject(other.gameObject);
-        print(ps + "setting other as attached gameobj");
     }
 
     public ObjectData GetData() {
