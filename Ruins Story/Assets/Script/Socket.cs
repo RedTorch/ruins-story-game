@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,6 +49,11 @@ public class Socket : MonoBehaviour
     }
 
     void OnTriggerStay(Collider other) {
+        /* Could be optimized by having OnTriggerEnter check the tags of the object 
+        and add it to an approval/ rejection list. OnTriggerStay just needs to check 
+        whether the object is held or let go. OnTriggerExit removes the object from 
+        the approve/reject list. This would avoid having to re-judge the object every frame,
+        which is only useful if the object's tags change mid-collision (unlikely). */
         ObjectData otherScr = other.GetComponent<ObjectData>();
         if(AttachedObject != null) {
             return;
@@ -78,5 +84,16 @@ public class Socket : MonoBehaviour
 
     public ObjectData GetData() {
         return AttachedData;
+    }
+
+    public string GetDescriptionText() {
+        string ret = "Description: A simple socket\n";
+        if(AcceptedTags.Length != 0) {
+            ret = ret + "Accepts:" + String.Join(", ", AcceptedTags) + "\n";
+        }
+        if(RejectedTags.Length != 0) {
+            ret = ret + "Rejects:" + String.Join(", ", RejectedTags);
+        }
+        return ret;
     }
 }

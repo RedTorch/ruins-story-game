@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectData : MonoBehaviour
 {
+    [SerializeField] private string DescText = "A simple object";
     [SerializeField] private List<string> Tags;
     // vvv this is of format "data header, value"
     [SerializeField] private Dictionary<string, float> Dats = new Dictionary<string, float>();
@@ -46,5 +47,18 @@ public class ObjectData : MonoBehaviour
 
     public float Dat_GetValue(string key) {
         return Dats[key];
+    }
+
+    public string GetTagsText() {
+        string ret = "Tags: ";
+        for(int i=0;i<Tags.Count;i++)
+        {
+            ret = ret + Tags[i] + ", ";
+        }
+        return ret;
+    }
+
+    public string GetDescriptionText() {
+        return "Description: " + DescText;
     }
 }

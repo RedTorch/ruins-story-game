@@ -7,10 +7,10 @@ public class PickupForce : MonoBehaviour
     public Rigidbody PullTarget;
     public Vector3 PullDestination;
 
-    private Transform cam;
     private bool isLocked = false;
     // [SerializeField] private AnimationCurve PullForce;
 
+    private Transform cam;
     private RaycastHit hit;
 
     // Start is called before the first frame update
