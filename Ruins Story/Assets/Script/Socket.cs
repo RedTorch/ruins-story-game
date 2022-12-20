@@ -72,7 +72,7 @@ public class Socket : MonoBehaviour
             return;
         }
         foreach(string tag in RejectedTags) {
-            if(otherScr.Contains(tag) == false) {
+            if(otherScr.Contains(tag) == true) {
                 return;
             }
         }
