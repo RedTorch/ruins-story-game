@@ -11,12 +11,16 @@ public class ObjectData : MonoBehaviour
 
     [SerializeField] private List<Socket> MySockets;
 
+    [SerializeField] private bool IsRoot = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        IsRoot = (gameObject.GetComponent<Rigidbody>() == null);
         foreach (Transform child in transform) {
             if (child.gameObject.GetComponent<Socket>() != null) {
                 MySockets.Add(child.gameObject.GetComponent<Socket>());
+                child.gameObject.GetComponent<Socket>().SetIsRoot(IsRoot);
             }
         }
     }

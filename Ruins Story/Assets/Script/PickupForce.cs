@@ -8,6 +8,8 @@ public class PickupForce : MonoBehaviour
     public Vector3 PullDestination;
     public float GrabPosOffset = 3f;
 
+    public float GrabRange = 20f;
+
     private bool isLocked = false;
     // [SerializeField] private AnimationCurve PullForce;
 
@@ -23,7 +25,7 @@ public class PickupForce : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Fire1") && Physics.Raycast(cam.position, cam.forward, out hit, 20f)) {
+        if(Input.GetButtonDown("Fire1") && Physics.Raycast(cam.position, cam.forward, out hit, GrabRange)) {
             Grab(hit.rigidbody);
         }
         else if(Input.GetButton("Fire1") && PullTarget != null) {
@@ -61,6 +63,8 @@ public class PickupForce : MonoBehaviour
         if(PullTarget == null || PullTarget.GetComponent<ObjectData>() == null) {
             return;
         }
+        float throwForce = GrabRange/4f;
+        PullTarget.velocity = cam.forward * throwForce;
         PullTarget.GetComponent<ObjectData>().Remove("isHeld");
         PullTarget.useGravity = true;
         PullTarget = null;

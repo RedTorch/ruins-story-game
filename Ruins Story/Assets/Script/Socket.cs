@@ -9,6 +9,11 @@ public class Socket : MonoBehaviour
     public string[] AcceptedTags;
     [Tooltip("A list of tags which will prevent an object from docking.")]
     public string[] RejectedTags;
+    public float DockPosOffset = 0.6f;
+
+    private bool IsEnabled = true;
+
+    private bool IsRoot = false;
 
     [SerializeField] private GameObject AttachedObject;
     [SerializeField] private ObjectData AttachedData;
@@ -50,7 +55,7 @@ public class Socket : MonoBehaviour
         }
         AttachedObject = newObj;
         AttachedObject.transform.SetParent(transform);
-        AttachedObject.transform.SetPositionAndRotation(transform.position, transform.rotation);
+        AttachedObject.transform.SetPositionAndRotation(transform.position + (transform.forward * -1f * DockPosOffset), transform.rotation);
         Rigidbody arb = AttachedObject.GetComponent<Rigidbody>();
         arb.isKinematic = true;
         AttachedData = AttachedObject.GetComponent<ObjectData>();
@@ -66,6 +71,9 @@ public class Socket : MonoBehaviour
         which is only useful if the object's tags change mid-collision (unlikely). */
         ObjectData otherScr = other.GetComponent<ObjectData>();
         if(AttachedObject != null) {
+            return;
+        }
+        if(!IsEnabled) {
             return;
         }
         if(otherScr == null) {
@@ -97,8 +105,23 @@ public class Socket : MonoBehaviour
 
     private void SetAttachedSockets(bool value) {
         foreach(Socket s in AttachedData.GetSockets()) {
-            s.gameObject.SetActive(value);
+            // s.gameObject.SetActive(value);
+            s.SetEnabled(value);
+            print("set socket to " + value);
         }
+    }
+
+    public void SetEnabled(bool value) {
+        if(IsRoot) {
+            print("Error: can't enable or disable a socket attached to a root object");
+            return;
+        }
+        IsEnabled = value;
+    }
+
+    public void SetIsRoot(bool value) { // only run when object spawned
+        IsRoot = value;
+        IsEnabled = value; // because a root is always enabled, while a non-root object will always be non-enabled at start
     }
 
     public ObjectData GetData() {
@@ -106,6 +129,9 @@ public class Socket : MonoBehaviour
     }
 
     public string GetDescriptionText() {
+        if(IsEnabled == false) {
+            return "This socket is disabled...";
+        }
         string ret = "Description: A simple socket\n";
         if(AcceptedTags.Length != 0) {
             ret = ret + "Accepts:" + String.Join(", ", AcceptedTags) + "\n";
