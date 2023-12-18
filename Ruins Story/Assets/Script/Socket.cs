@@ -9,6 +9,7 @@ public class Socket : MonoBehaviour
     public string[] AcceptedTags;
     [Tooltip("A list of tags which will prevent an object from docking.")]
     public string[] RejectedTags;
+
     public float DockPosOffset = 0.6f;
 
     private bool IsEnabled = true;
@@ -17,7 +18,11 @@ public class Socket : MonoBehaviour
 
     [SerializeField] private GameObject AttachedObject;
     [SerializeField] private ObjectData AttachedData;
+    [SerializeField] private AudioClip AttachSound;
+    [SerializeField] private AudioClip DetachSound;
     private ObjectData ThisData;
+
+    private AudioSource audio;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +30,7 @@ public class Socket : MonoBehaviour
         if(gameObject.GetComponent<ObjectData>() != null) {
             ThisData = gameObject.GetComponent<ObjectData>();
         }
+        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -40,6 +46,8 @@ public class Socket : MonoBehaviour
         foreach(Socket s in AttachedData.GetSockets()) {
             s.DetachCurrObject();
         }
+        audio.clip = DetachSound;
+        audio.Play();
         SetAttachedSockets(false);
         Rigidbody arb = AttachedObject.GetComponent<Rigidbody>();
         AttachedData.Remove("isAttached");
@@ -53,6 +61,8 @@ public class Socket : MonoBehaviour
         if(AttachedObject != null) {
             DetachCurrObject();
         }
+        audio.clip = AttachSound;
+        audio.Play();
         AttachedObject = newObj;
         AttachedObject.transform.SetParent(transform);
         AttachedObject.transform.SetPositionAndRotation(transform.position + (transform.forward * -1f * DockPosOffset), transform.rotation);

@@ -10,6 +10,7 @@ public class ObjectData : MonoBehaviour
     [SerializeField] private Dictionary<string, float> Dats = new Dictionary<string, float>();
 
     [SerializeField] private List<Socket> MySockets;
+    [SerializeField] private bool AutofillSocketsFromChildren = false;
 
     [SerializeField] private bool IsRoot = false;
 
@@ -17,10 +18,12 @@ public class ObjectData : MonoBehaviour
     void Start()
     {
         IsRoot = (gameObject.GetComponent<Rigidbody>() == null);
-        foreach (Transform child in transform) {
-            if (child.gameObject.GetComponent<Socket>() != null) {
-                MySockets.Add(child.gameObject.GetComponent<Socket>());
-                child.gameObject.GetComponent<Socket>().SetIsRoot(IsRoot);
+        if(AutofillSocketsFromChildren) {
+            foreach (Transform child in transform) {
+                if (child.gameObject.GetComponent<Socket>() != null) {
+                    MySockets.Add(child.gameObject.GetComponent<Socket>());
+                    child.gameObject.GetComponent<Socket>().SetIsRoot(IsRoot);
+                }
             }
         }
     }
